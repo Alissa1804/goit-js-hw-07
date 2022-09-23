@@ -18,15 +18,25 @@ function clickHandler(event) {
     return;
   }
   const selImg = event.target.getAttribute('data-source');
-  const instance = basicLightbox.create(`
+  const instance = basicLightbox.create(
+    `
     <img src = "${selImg}" width="800" height="600">
-`);
+`,
+    {
+      onShow: () => {
+        window.addEventListener('keydown', closeKey);
+      },
+      onClose: () => {
+        window.removeEventListener('keydown', closeKey);
+      },
+    },
+  );
 
   instance.show();
 
-  galleryEl.addEventListener('keydown', event => {
+  function closeKey(event) {
     if (event.key === 'Escape') {
       instance.close();
     }
-  });
+  }
 }
